@@ -1,17 +1,17 @@
 from processos.Auditoria import executar_auditoria
-from processos.FalsasFaltas import auditoria_sequencial
+from processos.FalsasFaltas import executar_verificacao, CAMINHO_FALTAS
 from processos.Formatacao import executar_formatacao
-
+    
 
 def main():
     print("Iniciando a auditoria de faltas...")
     executar_auditoria()
 
     print("Iniciando filtragem de servidores em licença")
-    auditoria_sequencial()
+    executar_verificacao()
 
     print("Iniciando a formatação")
-    executar_formatacao()
+    
 
     print("A auditoria está completa")
     print("Executar o codigo de datas no AppScript na conta do GOOGLE da CMP")

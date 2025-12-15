@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 import json
 import sys
-import os
+import pyxlsb
 
 
 def executar_auditoria():
@@ -44,11 +44,15 @@ def executar_auditoria():
 
     print('Gerando auditoria, aguarde!')
 
-    # Leitura de arquivos no mesmo diretório
-    caminhoBi00 = r"C:\Users\08477936137\Downloads\AuditoriaGit\planilhas\BD_Faltas\00 - Relação de Lotação.csv.csv"
-    caminhoFrequencias_seap = r"C:\Users\08477936137\Downloads\AuditoriaGit\planilhas\BD_Faltas\Consulta frequências dos funcionários.csv"
-    caminhoP1 = r"C:\Users\08477936137\Downloads\AuditoriaGit\planilhas\BD_Faltas\SEDUCAL.xlsx"
-    caminhoP2 = r"C:\Users\08477936137\Downloads\AuditoriaGit\planilhas\BD_Faltas\SEDUCMZ.xlsx"
+
+    # Leitura de arquivos usando caminhos dinâmicos
+    caminhoBi00 = r"C:\Users\08477936137\Downloads\AuditoriaDeFaltas\planilhas\Auxiliares\00 - Relação de Lotação.csv"
+    caminhoFrequencias_seap = r"C:\Users\08477936137\Downloads\AuditoriaDeFaltas\planilhas\Auxiliares\Consulta frequências dos funcionários.csv"
+    caminhoP1 = r"C:\Users\08477936137\Downloads\AuditoriaDeFaltas\planilhas\SEDUCAL.xlsx"
+    caminhoP2 = r"C:\Users\08477936137\Downloads\AuditoriaDeFaltas\planilhas\SEDUCMZ.xlsx"
+
+
+    
 
     bi00 = pd.read_csv(caminhoBi00, sep=';')
     frequencias_seap = pd.read_csv(caminhoFrequencias_seap, sep=';')
@@ -106,7 +110,7 @@ def executar_auditoria():
     # Se o nome original for 'SALDO FALTANTE', aqui ficaria 'SALDOFALTANTE'.
     # No seu caso, o nome parece não ter espaço, então 'SALDOFALTANTE' continua igual.
 # Garante que estamos selecionando a coluna com o nome padronizado...
-    base = base[['SETOR', 'NOME', 'MATRICULA', 'VINCULO', 'MF', 'DataFrequencia', 'SALDOFALTANTE']]
+    base = base[['SETOR', 'NOME', 'MATRICULA', 'VINCULO', 'MF', 'DataFrequencia', 'HORAEXECUTADA','SALDOFALTANTE']]
 
     # --- INSERÇÃO DA LIMPEZA DE MATRÍCULA E VÍNCULO (ESTRATÉGIA INT) ---
     
@@ -132,8 +136,6 @@ def executar_auditoria():
     escolas = escolas[['DRE', 'Municipio', 'UNIDADE ESCOLAR', 'NOME', 'MATRICULA', 'VINCULO', 'MF', 'DataFrequencia', 'SALDOFALTANTE']]
     escolas.drop_duplicates(inplace=True)
 
-
-
     outros = base[~base['SETOR'].str.match(r'^\d')].copy()
     outros = pd.merge(outros, frequencias_seap, left_on=['MATRICULA', 'VINCULO', 'DataFrequencia'], right_on=['numfunc', 'numvinc', 'dtini'], how='left')
     outros = outros[outros['consta seap'].isna()]
@@ -156,7 +158,7 @@ def executar_auditoria():
             return "DRE TANGARÁ DA SERRA"
         elif "RONDONOPOLIS" in setor or "RONDONÓPOLIS" in setor:
             return "DRE RONDONÓPOLIS"
-        elif "QUERENCIA" in setor or "BARRA DO GARÇAS" in setor or "DREBG" in setor:
+        elif "QUERENCIA" in setor or "BARRA DO GARÇAS" in setor or "DREBG" in setor or "BARRA DO GARCAS" in setor:
             return "DRE BARRA DO GARÇAS"
         elif "DREDIAM" in setor or "DIAMANTINO" in setor:
             return "DRE DIAMANTINO"
@@ -172,7 +174,7 @@ def executar_auditoria():
 
 
 
-
+    escolas['SETOR'] = escolas['DRE'].astype(str).apply(atribuir_dre)
     outros["DRE"] = outros["SETOR"].apply(atribuir_dre)
     outros['SETOR'] = outros['SETOR'].str.strip()
     outros = outros[['DRE', 'SETOR', 'NOME', 'MATRICULA', 'VINCULO', 'MF', 'DataFrequencia', 'SALDOFALTANTE']]
@@ -217,6 +219,8 @@ def executar_auditoria():
                 nome_aba_escola = dre_nome.replace("DRE", "ESCOLA")[:31] 
                 dados_escola_dre.to_excel(writer, sheet_name=nome_aba_escola, index=False)
 
+
+                print(f"  > [ESCOLA] Aba criada: {nome_aba_escola}")  # <--- COLE AQUI
                 total_abas_criadas += 1
             
             # PASSO 5.2: Filtrar e salvar a aba de DRE (Administrativo) para a DRE atual
@@ -226,6 +230,9 @@ def executar_auditoria():
             if not dados_outros_dre.empty:
                 nome_aba_adm = dre_nome[:31]
                 dados_outros_dre.to_excel(writer, sheet_name=nome_aba_adm, index=False)
+
+
+                print(f"  > [ADM]    Aba criada: {nome_aba_adm}")     # <--- COLE AQUI
                 total_abas_criadas += 1
 
     # --- FIM DO NOVO BLOCO DE SALVAMENTO ---

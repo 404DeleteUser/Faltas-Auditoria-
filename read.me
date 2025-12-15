@@ -1,1 +1,15 @@
-ETAPAS PARA QUE O CÓDIGO FUNCIONE CORRETAMENTE
+Com certeza. O README.md é essencial para que você (ou outra pessoa) não se perca nas pastas depois.Preparei uma seção formatada em Markdown focada exatamente na organização das pastas e nos nomes dos arquivos.Note que mantive o nome da pasta Auxilixares (com o erro de digitação original do seu código) para garantir que funcione com o script que você já tem. Se você corrigir o nome da pasta no Windows para "Auxiliares", lembre-se de mudar no código também.Aqui está o trecho. Pode copiar e colar:📁 Estrutura de Arquivos e Pré-requisitosPara que o script execute a auditoria corretamente e encontre os dados, é obrigatório manter a estrutura de pastas e a nomenclatura exata dos arquivos conforme listado abaixo.Árvore de DiretóriosCertifique-se de que os arquivos estejam organizados desta forma dentro da pasta do projeto:PlaintextAuditoriaDeFaltas/
+│
+├── main.py (ou o executável)
+├── data.json (gerado automaticamente)
+│
+└── planilhas/
+    │
+    ├── SEDUCAL.xlsb
+    ├── SEDUCMZ.xlsb
+    ├── Licencas.xlsx      <-- (Verifique a extensão correta: .xlsx ou .csv)
+    │
+    └── Auxilixares/
+        ├── 00 - Relação de Lotação.csv
+        └── Consulta frequências dos funcionários.csv
+📄 Detalhe dos ArquivosOs arquivos devem ser salvos com os nomes exatos abaixo (respeitando maiúsculas, minúsculas e acentos):ArquivoExtensãoLocalizaçãoDescriçãoSEDUCAL.xlsb/planilhasBase de dados da SEDUC (Capital/Interior).SEDUCMZ.xlsb/planilhasBase de dados da SEDUC (Matriz/Outros).Licencas.xlsx*/planilhasPlanilha contendo os dados de licenças.00 - Relação de Lotação.csv/planilhas/AuxilixaresRelatório do BI com códigos de lotação.Consulta frequências dos funcionários.csv/planilhas/AuxilixaresExtração do sistema SEAP.⚠️ Atenção: O script foi configurado para ler arquivos .csv com separador de ponto e vírgula (;). Caso salve os arquivos CSV pelo Excel, verifique se esta configuração está mantida.
