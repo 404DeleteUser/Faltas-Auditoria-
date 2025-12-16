@@ -144,38 +144,38 @@ def executar_auditoria():
         setor = setor.upper()
         if "PRIMAVERA DO LESTE" in setor:
             return "DRE PRIMAVERA DO LESTE"
-        elif "CUIABA" in setor or "CUIABÁ" in setor:
+        elif "CUIABA" in setor or "CUIABÁ" in setor or "VARZEA GRANDE" in setor:
             return "DRE METROPOLITANA"
         elif "ALTA FLORESTA" in setor:
             return "DRE ALTA FLORESTA"
         elif "CONFRESA" in setor:
             return "DRE CONFRESA"
         elif "CACERES" in setor or "CÁCERES" in setor:
-            return "DRE CÁCERES"
+            return "DRE CACERES"
         elif "PONTES E LACERDA" in setor or "DREPLC" in setor:
             return "DRE PONTES E LACERDA"
         elif "TANGARÁ DA SERRA" in setor or "TANGARA DA SERRA" in setor:
-            return "DRE TANGARÁ DA SERRA"
+            return "DRE TANGARA DA SERRA"
         elif "RONDONOPOLIS" in setor or "RONDONÓPOLIS" in setor:
-            return "DRE RONDONÓPOLIS"
+            return "DRE RONDONOPOLIS"
         elif "QUERENCIA" in setor or "BARRA DO GARÇAS" in setor or "DREBG" in setor or "BARRA DO GARCAS" in setor:
-            return "DRE BARRA DO GARÇAS"
+            return "DRE BARRA DO GARCAS"
         elif "DREDIAM" in setor or "DIAMANTINO" in setor:
             return "DRE DIAMANTINO"
         elif "JUINA" in setor or "DREJUI" in setor:
-            return "DRE JUÍNA"
+            return "DRE JUINA"
         elif "MATUPÁ" in setor or "MATUPA" in setor:
             return "DRE MATUPA"
         elif "SINOP" in setor or "DRESNP" in setor:
             return "DRE SINOP"
         else:
-            return "ÓRGÂO CENTRAL"
+            return "ORGAO CENTRAL"
         
 
 
 
-    escolas['SETOR'] = escolas['DRE'].astype(str).apply(atribuir_dre)
     outros["DRE"] = outros["SETOR"].apply(atribuir_dre)
+
     outros['SETOR'] = outros['SETOR'].str.strip()
     outros = outros[['DRE', 'SETOR', 'NOME', 'MATRICULA', 'VINCULO', 'MF', 'DataFrequencia', 'SALDOFALTANTE']]
     outros.drop_duplicates(inplace=True)
@@ -240,6 +240,5 @@ def executar_auditoria():
 
 
 
-    
     print(f'Relatório finalizado. Total de {total_abas_criadas} foram criadas')
     print('Auditoria concluída com sucesso!')

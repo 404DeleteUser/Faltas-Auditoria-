@@ -11,7 +11,7 @@ def main():
     executar_verificacao()
 
     print("Iniciando a formatação")
-    
+    executar_formatacao()
 
     print("A auditoria está completa")
     print("Executar o codigo de datas no AppScript na conta do GOOGLE da CMP")
