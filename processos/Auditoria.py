@@ -4,8 +4,6 @@ from datetime import datetime
 from pathlib import Path
 import json
 import sys
-import pyxlsb
-
 
 def executar_auditoria():
 
@@ -177,7 +175,7 @@ def executar_auditoria():
     outros["DRE"] = outros["SETOR"].apply(atribuir_dre)
 
     outros['SETOR'] = outros['SETOR'].str.strip()
-    outros = outros[['DRE', 'SETOR', 'NOME', 'MATRICULA', 'VINCULO', 'MF', 'DataFrequencia', 'SALDOFALTANTE']]
+    outros = outros[['DRE','Municipio', 'SETOR', 'NOME', 'MATRICULA', 'VINCULO', 'MF', 'DataFrequencia', 'SALDOFALTANTE']]
     outros.drop_duplicates(inplace=True)
 
 
